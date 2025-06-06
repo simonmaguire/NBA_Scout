@@ -11,11 +11,6 @@ import { withThemeFromJSXProvider } from "@storybook/addon-themes";
 /* TODO: update import for your custom Material UI themes */
 // import { lightTheme, darkTheme } from "@mui/material";
 
-import "@fontsource/roboto/300.css";
-import "@fontsource/roboto/400.css";
-import "@fontsource/roboto/500.css";
-import "@fontsource/roboto/700.css";
-
 const preview: Preview = {
   parameters: {
     controls: {
