@@ -7,7 +7,7 @@ Base = declarative_base()
 class TM_Box_Trad(Base):
     __tablename__='team_boxscore_trad'
 
-    game_id: Mapped[int] = mapped_column(primary_key=True)
+    game_id: Mapped[int] = mapped_column(ForeignKey('game.game_id'), primary_key=True)
     team_id: Mapped[int] = mapped_column()
     team:  Mapped[str] = mapped_column(primary_key=True)
     min: Mapped[float] = mapped_column()
