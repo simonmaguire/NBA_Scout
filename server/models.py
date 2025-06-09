@@ -1,6 +1,7 @@
 from sqlalchemy import Column, Integer, String, Date, ForeignKey, Float
-from sqlalchemy.orm import declarative_base, Mapped, mapped_column
+from sqlalchemy.orm import declarative_base, Mapped, mapped_column, relationship
 from datetime import date
+from typing import List
 
 Base = declarative_base()
 
@@ -32,6 +33,7 @@ class TM_Box_Trad(Base):
     plus_minus: Mapped[float] = mapped_column()
     win: Mapped[float] = mapped_column()
     opp: Mapped[str] = mapped_column()
+    game: Mapped['Game'] = relationship(back_populates='boxscores')
 
     
 class Game(Base):
@@ -43,3 +45,4 @@ class Game(Base):
     home: Mapped[str] = mapped_column()
     away: Mapped[str] = mapped_column()
     season: Mapped[int] = mapped_column()
+    boxscores: Mapped[List['TM_Box_Trad']] = relationship()
