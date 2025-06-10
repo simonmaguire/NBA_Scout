@@ -28,12 +28,18 @@ app.add_middleware(
 
 
 @app.get("/team_boxscores/", response_model=list[schemas.TeamBoxTrad])
-def read_items(skip: int = 0, limit: int = 10, db: Session = Depends(get_db)):
-    items = crud.get_team_boxscores(db, skip=skip, limit=limit)
+def read_items(db: Session = Depends(get_db)):
+    items = crud.get_team_boxscores(db)
     return items
 
-@app.get("/team_boxscores/{season}/{team}", response_model=List[schemas.TeamBoxTrad])
-def boxscores_singleTeam_singleSeason(season: int, team: str, db: Session = Depends(get_db)):
+@app.get("/team_boxscores/{season}/", response_model=List[schemas.TeamBoxTrad])
+def boxscores_singleSeason(season: int, db: Session = Depends(get_db)):
+    team = None
+    boxscores = crud.get_teams_season_boxscores(db, team, season)
+    return boxscores
+
+@app.get("/team_boxscores/{season}/{team}/", response_model=List[schemas.TeamBoxTrad])
+def boxscores_singleTeam_singleSeason(season: int, team: str | None = None, db: Session = Depends(get_db)):
     boxscores = crud.get_teams_season_boxscores(db, team, season)
     return boxscores
 

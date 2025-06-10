@@ -1,59 +1,17 @@
 import { Box, Typography } from "@mui/material";
 import { ScatterChart } from "@mui/x-charts/ScatterChart";
-import { useEffect, useState } from "react";
 // import { getSingleSeasonTeamBox } from "../../data_access/GetDataFuncs";
+import { type TeamBoxscore } from "../../data_access/Teams";
 
-type TeamAbbr = string;
-
-interface TeamBoxscore {
-  game_id: number;
-  team_id: number;
-  team: TeamAbbr;
-  min: number;
-  pts: number;
-  fgm: number;
-  fga: number;
-  fg_percent: number;
-  three_m: number;
-  three_a: number;
-  three_percent: number;
-  ftm: number;
-  fta: number;
-  ft_percent: number;
-  oreb: number;
-  dreb: number;
-  reb: number;
-  ast: number;
-  tov: number;
-  stl: number;
-  blk: number;
-  pf: number;
-  plus_minus: number;
-  win: number;
-  opp: TeamAbbr;
+interface BasicScatterProps {
+  boxscores: TeamBoxscore[];
+  wholeLeague: boolean;
 }
 
-export const BasicScatter = () => {
-  const [boxscores, setBoxscores] = useState<TeamBoxscore[] | []>([]);
-
-  useEffect(() => {
-    const getSingleSeasonTeamBox = async (season: number, team: string) => {
-      const response = await fetch(
-        `${
-          import.meta.env.VITE_API_ENDPOINT_DEV
-        }/team_boxscores/${season}/${team}`,
-        {
-          method: "GET",
-          headers: { "content-type": "application/json" },
-        }
-      );
-      const json = (await response.json()) as TeamBoxscore[];
-      setBoxscores(json);
-    };
-
-    getSingleSeasonTeamBox(2024, "BOS");
-  }, []);
-
+export const BasicScatter: React.FC<BasicScatterProps> = ({
+  boxscores,
+  wholeLeague,
+}) => {
   const otherSettings = {
     yAxis: [{ label: "FG %" }],
     xAxis: [{ label: "FGA" }],
@@ -70,7 +28,7 @@ export const BasicScatter = () => {
               y: v.fg_percent,
               z: v.win,
             })),
-            markerSize: 3,
+            markerSize: wholeLeague ? 2 : 3,
           },
         ]}
         zAxis={[
@@ -88,30 +46,14 @@ export const BasicScatter = () => {
   );
 };
 
-export const ReferenceLineScatter = () => {
-  const [boxscores, setBoxscores] = useState<TeamBoxscore[] | []>([]);
-
-  useEffect(() => {
-    const getSingleSeasonTeamBox = async (season: number, team: string) => {
-      const response = await fetch(
-        `${
-          import.meta.env.VITE_API_ENDPOINT_DEV
-        }/team_boxscores/${season}/${team}`,
-        {
-          method: "GET",
-          headers: { "content-type": "application/json" },
-        }
-      );
-      const json = (await response.json()) as TeamBoxscore[];
-      setBoxscores(json);
-    };
-
-    getSingleSeasonTeamBox(2024, "BOS");
-  }, []);
-
+export const ReferenceLineScatter: React.FC<BasicScatterProps> = ({
+  boxscores,
+  wholeLeague,
+}) => {
   return (
     <Box>
       <Typography>Defensive Rebounds</Typography>
+
       <ScatterChart
         height={300}
         series={[
@@ -120,7 +62,7 @@ export const ReferenceLineScatter = () => {
               x: v.dreb,
               y: v.plus_minus,
             })),
-            markerSize: 3,
+            markerSize: wholeLeague ? 2 : 3,
           },
         ]}
         grid={{ horizontal: true }}
@@ -139,6 +81,7 @@ export const ReferenceLineScatter = () => {
             label: "DREB",
           },
         ]}
+        loading={boxscores.length < 0}
       />
     </Box>
   );
