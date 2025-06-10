@@ -4,10 +4,28 @@ from fastapi import Depends, FastAPI, HTTPException, Query
 from sqlalchemy.orm import Session
 import crud, schemas, models
 from db import session, engine, get_db
+from fastapi.middleware.cors import CORSMiddleware
+import os
+from dotenv import load_dotenv
+
+load_dotenv()
 
 models.Base.metadata.create_all(bind=engine)
 
 app = FastAPI()
+
+origins = [
+    os.getenv('CLIENT_DEV', "http://localhost:5173"),
+]
+
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=origins,
+    allow_credentials=True,  
+    allow_methods=["*"],     
+    allow_headers=["*"],   
+)
+
 
 @app.get("/team_boxscores/", response_model=list[schemas.TeamBoxTrad])
 def read_items(skip: int = 0, limit: int = 10, db: Session = Depends(get_db)):
