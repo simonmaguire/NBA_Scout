@@ -8,7 +8,48 @@ interface BasicScatterProps {
   wholeLeague: boolean;
 }
 
-export const BasicScatter: React.FC<BasicScatterProps> = ({
+export const AstTovScatter: React.FC<BasicScatterProps> = ({
+  boxscores,
+  wholeLeague,
+}) => {
+  const otherSettings = {
+    yAxis: [{ label: "Turnovers" }],
+    xAxis: [{ label: "Assists" }],
+  };
+
+  return (
+    <Box>
+      <Typography>Assists to Turnovers</Typography>
+      <ScatterChart
+        height={300}
+        width={300}
+        voronoiMaxRadius={30}
+        series={[
+          {
+            data: boxscores.map((v) => ({
+              x: v.ast,
+              y: v.tov,
+              z: v.win,
+            })),
+            markerSize: wholeLeague ? 2 : 3,
+          },
+        ]}
+        zAxis={[
+          {
+            colorMap: {
+              type: "piecewise",
+              thresholds: [0.5],
+              colors: ["#eb4034", "#0a8018"],
+            },
+          },
+        ]}
+        {...otherSettings}
+      />
+    </Box>
+  );
+};
+
+export const FieldGoalScatter: React.FC<BasicScatterProps> = ({
   boxscores,
   wholeLeague,
 }) => {
@@ -21,11 +62,53 @@ export const BasicScatter: React.FC<BasicScatterProps> = ({
       <Typography>Field Goals</Typography>
       <ScatterChart
         height={300}
+        width={300}
+        voronoiMaxRadius={30}
         series={[
           {
             data: boxscores.map((v) => ({
               x: v.fga,
               y: v.fg_percent,
+              z: v.win,
+            })),
+            markerSize: wholeLeague ? 2 : 3,
+          },
+        ]}
+        zAxis={[
+          {
+            colorMap: {
+              type: "piecewise",
+              thresholds: [0.5],
+              colors: ["#eb4034", "#0a8018"],
+            },
+          },
+        ]}
+        {...otherSettings}
+      />
+    </Box>
+  );
+};
+
+export const ThreePointScatter: React.FC<BasicScatterProps> = ({
+  boxscores,
+  wholeLeague,
+}) => {
+  const otherSettings = {
+    yAxis: [{ label: "3PT %" }],
+    xAxis: [{ label: "3PT" }],
+  };
+  return (
+    <Box>
+      <Typography>Three Pointers</Typography>
+      <ScatterChart
+        height={300}
+        width={300}
+        voronoiMaxRadius={30}
+        series={[
+          {
+            data: boxscores.map((v) => ({
+              x: v.three_a,
+              y: v.three_percent,
               z: v.win,
             })),
             markerSize: wholeLeague ? 2 : 3,
@@ -56,6 +139,8 @@ export const ReferenceLineScatter: React.FC<BasicScatterProps> = ({
 
       <ScatterChart
         height={300}
+        width={300}
+        voronoiMaxRadius={30}
         series={[
           {
             data: boxscores.map((v) => ({
