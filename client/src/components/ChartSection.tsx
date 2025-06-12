@@ -1,12 +1,7 @@
 import { useState, useEffect } from "react";
 import { Box, Grid, Typography } from "@mui/material";
 import { Paper } from "@mui/material";
-import {
-  FieldGoalScatter,
-  ReferenceLineScatter,
-  AstTovScatter,
-  ThreePointScatter,
-} from "./charts/BasicScatter";
+import { ScatterChartColoredWins } from "./charts/BasicScatter";
 import { getSingleSeasonTeamBox } from "../data_access/GetDataFuncs";
 import { type TeamAbbr, type TeamBoxscore } from "../data_access/Teams";
 import CircleIcon from "@mui/icons-material/Circle";
@@ -51,21 +46,39 @@ export const ChartSection: React.FC<ChartSectionProps> = ({ team }) => {
         justifyContent={"center"}
       >
         <Paper>
-          <FieldGoalScatter boxscores={boxscores} wholeLeague={team == "ALL"} />
-        </Paper>
-        <Paper>
-          <ThreePointScatter
+          <ScatterChartColoredWins
             boxscores={boxscores}
             wholeLeague={team == "ALL"}
+            title={"Field Goals"}
+            xAxis={{ label: "FG Attempts", stat: "fga" }}
+            yAxis={{ label: "FG %", stat: "fg_percent" }}
           />
         </Paper>
         <Paper>
-          <AstTovScatter boxscores={boxscores} wholeLeague={team == "ALL"} />
-        </Paper>
-        <Paper>
-          <ReferenceLineScatter
+          <ScatterChartColoredWins
             boxscores={boxscores}
             wholeLeague={team == "ALL"}
+            title={"Three Pointers"}
+            xAxis={{ label: "3PT Attempts", stat: "three_a" }}
+            yAxis={{ label: "3PT %", stat: "three_percent" }}
+          />
+        </Paper>
+        <Paper>
+          <ScatterChartColoredWins
+            boxscores={boxscores}
+            wholeLeague={team == "ALL"}
+            title={"Assists to Turnovers"}
+            xAxis={{ label: "Assists", stat: "ast" }}
+            yAxis={{ label: "Turnovers", stat: "tov" }}
+          />
+        </Paper>
+        <Paper>
+          <ScatterChartColoredWins
+            boxscores={boxscores}
+            wholeLeague={team == "ALL"}
+            title={"Rebounds"}
+            xAxis={{ label: "DREB", stat: "dreb" }}
+            yAxis={{ label: "OREB", stat: "oreb" }}
           />
         </Paper>
       </Grid>

@@ -3,6 +3,7 @@ import InputLabel from "@mui/material/InputLabel";
 import MenuItem from "@mui/material/MenuItem";
 import FormControl from "@mui/material/FormControl";
 import { type TeamAbbr, teamOptions } from "../data_access/Teams";
+import { Typography } from "@mui/material";
 
 import Select, { type SelectChangeEvent } from "@mui/material/Select";
 
@@ -17,7 +18,7 @@ export const TeamSelector: React.FC<TeamSelectorProps> = ({
 }) => {
   return (
     <Box sx={{ minWidth: 120, padding: "1rem", justifyItems: "left" }}>
-      <p>Which team's stats do you want to analyze</p>
+      <Typography sx={{ paddingBottom: 1 }}>Pick a team to scout</Typography>
       <FormControl color="secondary" sx={{ width: "120px" }}>
         <InputLabel id="demo-simple-select-label">Team</InputLabel>
         <Select
