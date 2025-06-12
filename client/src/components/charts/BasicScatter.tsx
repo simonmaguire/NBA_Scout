@@ -3,23 +3,35 @@ import { ScatterChart } from "@mui/x-charts/ScatterChart";
 // import { getSingleSeasonTeamBox } from "../../data_access/GetDataFuncs";
 import { type TeamBoxscore } from "../../data_access/Teams";
 
+type BoxscoreKeys = keyof TeamBoxscore;
+
+type BoxscoreStats = Exclude<
+  BoxscoreKeys,
+  "team" | "game_id" | "team_id" | "min" | "opp"
+>;
+
 interface BasicScatterProps {
   boxscores: TeamBoxscore[];
   wholeLeague: boolean;
+  title: string;
+  xAxis: { label: string; stat: BoxscoreStats };
+  yAxis: { label: string; stat: BoxscoreStats };
 }
 
-export const AstTovScatter: React.FC<BasicScatterProps> = ({
+export const ScatterChartColoredWins: React.FC<BasicScatterProps> = ({
   boxscores,
   wholeLeague,
+  title,
+  xAxis,
+  yAxis,
 }) => {
   const otherSettings = {
-    yAxis: [{ label: "Turnovers" }],
-    xAxis: [{ label: "Assists" }],
+    yAxis: [{ label: yAxis.label }],
+    xAxis: [{ label: xAxis.label }],
   };
-
   return (
-    <Box>
-      <Typography>Assists to Turnovers</Typography>
+    <Box height={320} width={300}>
+      <Typography>{title}</Typography>
       <ScatterChart
         height={300}
         width={300}
@@ -27,8 +39,8 @@ export const AstTovScatter: React.FC<BasicScatterProps> = ({
         series={[
           {
             data: boxscores.map((v) => ({
-              x: v.ast,
-              y: v.tov,
+              x: v[xAxis.stat],
+              y: v[yAxis.stat],
               z: v.win,
             })),
             markerSize: wholeLeague ? 2 : 3,
@@ -49,92 +61,12 @@ export const AstTovScatter: React.FC<BasicScatterProps> = ({
   );
 };
 
-export const FieldGoalScatter: React.FC<BasicScatterProps> = ({
-  boxscores,
-  wholeLeague,
-}) => {
-  const otherSettings = {
-    yAxis: [{ label: "FG %" }],
-    xAxis: [{ label: "FGA" }],
-  };
-  return (
-    <Box>
-      <Typography>Field Goals</Typography>
-      <ScatterChart
-        height={300}
-        width={300}
-        voronoiMaxRadius={30}
-        series={[
-          {
-            data: boxscores.map((v) => ({
-              x: v.fga,
-              y: v.fg_percent,
-              z: v.win,
-            })),
-            markerSize: wholeLeague ? 2 : 3,
-          },
-        ]}
-        zAxis={[
-          {
-            colorMap: {
-              type: "piecewise",
-              thresholds: [0.5],
-              colors: ["#eb4034", "#0a8018"],
-            },
-          },
-        ]}
-        {...otherSettings}
-      />
-    </Box>
-  );
-};
-
-export const ThreePointScatter: React.FC<BasicScatterProps> = ({
-  boxscores,
-  wholeLeague,
-}) => {
-  const otherSettings = {
-    yAxis: [{ label: "3PT %" }],
-    xAxis: [{ label: "3PT" }],
-  };
-  return (
-    <Box>
-      <Typography>Three Pointers</Typography>
-      <ScatterChart
-        height={300}
-        width={300}
-        voronoiMaxRadius={30}
-        series={[
-          {
-            data: boxscores.map((v) => ({
-              x: v.three_a,
-              y: v.three_percent,
-              z: v.win,
-            })),
-            markerSize: wholeLeague ? 2 : 3,
-          },
-        ]}
-        zAxis={[
-          {
-            colorMap: {
-              type: "piecewise",
-              thresholds: [0.5],
-              colors: ["#eb4034", "#0a8018"],
-            },
-          },
-        ]}
-        {...otherSettings}
-      />
-    </Box>
-  );
-};
-
-export const ReferenceLineScatter: React.FC<BasicScatterProps> = ({
+export const DREBScatter: React.FC<BasicScatterProps> = ({
   boxscores,
   wholeLeague,
 }) => {
   return (
-    <Box>
+    <Box height={300} width={300}>
       <Typography>Defensive Rebounds</Typography>
 
       <ScatterChart
@@ -166,7 +98,6 @@ export const ReferenceLineScatter: React.FC<BasicScatterProps> = ({
             label: "DREB",
           },
         ]}
-        loading={boxscores.length < 0}
       />
     </Box>
   );

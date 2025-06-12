@@ -24,6 +24,7 @@ Hello! This Web Application enables the user to explore basic basketball box sco
 - Pandas
 - SQL
 - Postgres Database hosted on AWS
+- Alembic for Database migrations
 
 ## Accomplished
 
@@ -49,6 +50,7 @@ I want my backend tested. However, all my functions rely on the DB. I considered
   I did some research through the docs, some articles and some videos and I added Storybook.js to the project. And I haven't done anything with it since. So adding some stories about the components I currently have is one of my next steps.
 - Frontend Tests
   I kept seeing that Storybook could be used to conduct testing on components. So I've waited to add tests (admittedly I'm not the quickest to add tests anyways) until I start creating stories and can see if this testing is comprehensive enough to replace unit tests in Jest.
+- Intermittent Speed Issues. Hits to the Server (or DB) are sometimes very slow. Range is around 100ms to 20s. Look into fixing this and adding a loading display.
 - A Visualization Features
   - A season selector to see/compare across seasons
   - Compare two teams

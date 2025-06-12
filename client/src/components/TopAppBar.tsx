@@ -24,7 +24,7 @@ export const TopAppBar = () => {
             component="div"
             // sx={{ flexGrow: 1, alignSelf: "left" }}
           >
-            NBA Scout
+            Every Court Advantage
           </Typography>
         </Toolbar>
       </AppBar>
