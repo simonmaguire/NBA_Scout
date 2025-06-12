@@ -71,3 +71,21 @@ export const ThreePointers: Story = {
     },
   },
 };
+
+export const Empty: Story = {
+  args: {
+    boxscores: [],
+    wholeLeague: false,
+    title: "Assists to Turnovers",
+
+    xAxis: {
+      label: "Assists",
+      stat: "ast",
+    },
+
+    yAxis: {
+      label: "Turnovers",
+      stat: "tov",
+    },
+  },
+};
