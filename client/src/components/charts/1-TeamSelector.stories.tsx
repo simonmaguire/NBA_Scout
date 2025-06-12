@@ -37,4 +37,5 @@ export const TeamSelectorChange = {
       await expect(canvas.getByText("ATL")).toBeInTheDocument();
     }
   },
+  args: { team: "", handleChange: () => {} },
 } satisfies Story;
