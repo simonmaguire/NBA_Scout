@@ -26,7 +26,7 @@ export const TeamSelector: React.FC<TeamSelectorProps> = ({
     <Grid container flexDirection={"row"}>
       <Box sx={{ minWidth: 120, padding: "1rem", justifyItems: "left" }}>
         <FormControl color="secondary" sx={{ width: "120px" }}>
-          <InputLabel id="demo-simple-select-label">Team</InputLabel>
+          <InputLabel id="team-select-label">Team</InputLabel>
           <Select
             labelId="team-select-label"
             id="team-select"
@@ -44,7 +44,7 @@ export const TeamSelector: React.FC<TeamSelectorProps> = ({
       </Box>
       <Box sx={{ minWidth: 120, padding: "1rem", justifyItems: "left" }}>
         <FormControl color="secondary" sx={{ width: "120px" }}>
-          <InputLabel id="demo-simple-select-label">Season</InputLabel>
+          <InputLabel id="season-select-label">Season</InputLabel>
           <Select
             labelId="season-select-label"
             id="season-select"
