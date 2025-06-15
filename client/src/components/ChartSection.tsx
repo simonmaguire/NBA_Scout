@@ -8,24 +8,25 @@ import CircleIcon from "@mui/icons-material/Circle";
 
 interface ChartSectionProps {
   team: TeamAbbr;
+  season: number;
 }
 
-export const ChartSection: React.FC<ChartSectionProps> = ({ team }) => {
+export const ChartSection: React.FC<ChartSectionProps> = ({ team, season }) => {
   const [boxscores, setBoxscores] = useState<TeamBoxscore[]>([]);
 
   useEffect(() => {
     if (!team) return;
     if (team !== "ALL") {
-      getSingleSeasonTeamBox(2024, team).then((data) => {
+      getSingleSeasonTeamBox(season, team).then((data) => {
         setBoxscores(data);
       });
     }
     if (team == "ALL") {
-      getSingleSeasonTeamBox(2024).then((data) => {
+      getSingleSeasonTeamBox(season).then((data) => {
         setBoxscores(data);
       });
     }
-  }, [team]);
+  }, [team, season]);
 
   return (
     <Box>

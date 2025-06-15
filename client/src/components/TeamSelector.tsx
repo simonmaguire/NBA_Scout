@@ -1,40 +1,65 @@
 import Box from "@mui/material/Box";
+import { Grid } from "@mui/material";
 import InputLabel from "@mui/material/InputLabel";
 import MenuItem from "@mui/material/MenuItem";
 import FormControl from "@mui/material/FormControl";
 import { type TeamAbbr, teamOptions } from "../data_access/Teams";
-import { Typography } from "@mui/material";
 
 import Select, { type SelectChangeEvent } from "@mui/material/Select";
 
 type TeamSelectorProps = {
   team: TeamAbbr;
-  handleChange: (event: SelectChangeEvent<string>) => void;
+  handleChangeTeam: (event: SelectChangeEvent<string>) => void;
+  season: number;
+  handleChangeSeason: (event: SelectChangeEvent<number>) => void;
+  teamSeasons: number[];
 };
 
 export const TeamSelector: React.FC<TeamSelectorProps> = ({
   team,
-  handleChange,
+  handleChangeTeam,
+  season,
+  handleChangeSeason,
+  teamSeasons,
 }) => {
   return (
-    <Box sx={{ minWidth: 120, padding: "1rem", justifyItems: "left" }}>
-      <Typography sx={{ paddingBottom: 1 }}>Pick a team to scout</Typography>
-      <FormControl color="secondary" sx={{ width: "120px" }}>
-        <InputLabel id="demo-simple-select-label">Team</InputLabel>
-        <Select
-          labelId="demo-simple-select-label"
-          id="demo-simple-select"
-          value={team}
-          label="Team"
-          onChange={handleChange}
-        >
-          {teamOptions.map((team) => (
-            <MenuItem key={team} value={team}>
-              {team}
-            </MenuItem>
-          ))}
-        </Select>
-      </FormControl>
-    </Box>
+    <Grid container flexDirection={"row"}>
+      <Box sx={{ minWidth: 120, padding: "1rem", justifyItems: "left" }}>
+        <FormControl color="secondary" sx={{ width: "120px" }}>
+          <InputLabel id="team-select-label">Team</InputLabel>
+          <Select
+            labelId="team-select-label"
+            id="team-select"
+            value={team}
+            label="Team"
+            onChange={handleChangeTeam}
+          >
+            {teamOptions.map((team) => (
+              <MenuItem key={team} value={team}>
+                {team}
+              </MenuItem>
+            ))}
+          </Select>
+        </FormControl>
+      </Box>
+      <Box sx={{ minWidth: 120, padding: "1rem", justifyItems: "left" }}>
+        <FormControl color="secondary" sx={{ width: "120px" }}>
+          <InputLabel id="season-select-label">Season</InputLabel>
+          <Select
+            labelId="season-select-label"
+            id="season-select"
+            value={season}
+            label="Season"
+            onChange={handleChangeSeason}
+          >
+            {teamSeasons.map((seasonOption) => (
+              <MenuItem key={seasonOption} value={seasonOption}>
+                {seasonOption}
+              </MenuItem>
+            ))}
+          </Select>
+        </FormControl>
+      </Box>
+    </Grid>
   );
 };
