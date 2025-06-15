@@ -35,15 +35,23 @@ def read_items(db: Session = Depends(get_db)):
 
 @app.get("/team_boxscores/{season}/", response_model=List[schemas.TeamBoxTrad])
 def boxscores_singleSeason(season: int, db: Session = Depends(get_db)):
-    team = None
-    boxscores = crud.get_teams_season_boxscores(db, team, season)
+    boxscores = crud.get_teams_season_boxscores(db, season)
     return boxscores
 
 @app.get("/team_boxscores/{season}/{team}/", response_model=List[schemas.TeamBoxTrad])
 def boxscores_singleTeam_singleSeason(season: int, team: str | None = None, db: Session = Depends(get_db)):
-    boxscores = crud.get_teams_season_boxscores(db, team, season)
+    boxscores = crud.get_teams_season_boxscores(db, season, team)
     return boxscores
 
+@app.get("/seasons/{team}/", response_model=List[int])
+def teams_seasons(team: str | None = None, db: Session = Depends(get_db)):
+    seasons = crud.get_teams_seasons(db, team)
+    return seasons
+
+@app.get("/seasons/", response_model=List[int])
+def all_seasons(db: Session = Depends(get_db)):
+    seasons = crud.get_teams_seasons(db)
+    return seasons
 # @app.get("/season_correlations/{season}/{team}", response_model=List[float])
 # def get_season_correlations(season: int, team: str, db: Session = Depends(get_db)):
 #     corrs = crud.get_season_correlations(db, team, season)
