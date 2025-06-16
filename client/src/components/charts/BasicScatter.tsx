@@ -2,6 +2,7 @@ import { Box, Typography } from "@mui/material";
 import { ScatterChart } from "@mui/x-charts/ScatterChart";
 // import { getSingleSeasonTeamBox } from "../../data_access/GetDataFuncs";
 import { type TeamBoxscore } from "../../data_access/Teams";
+import { type HighlightItemData } from "@mui/x-charts/context";
 
 type BoxscoreKeys = keyof TeamBoxscore;
 
@@ -16,6 +17,8 @@ interface BasicScatterProps {
   title: string;
   xAxis: { label: string; stat: BoxscoreStats };
   yAxis: { label: string; stat: BoxscoreStats };
+  onHighlightChange: (highlightedItem: HighlightItemData | null) => void;
+  highlightedItem: HighlightItemData | null;
 }
 
 export const ScatterChartColoredWins: React.FC<BasicScatterProps> = ({
@@ -24,6 +27,8 @@ export const ScatterChartColoredWins: React.FC<BasicScatterProps> = ({
   title,
   xAxis,
   yAxis,
+  onHighlightChange,
+  highlightedItem,
 }) => {
   const otherSettings = {
     yAxis: [{ label: yAxis.label }],
@@ -35,7 +40,9 @@ export const ScatterChartColoredWins: React.FC<BasicScatterProps> = ({
       <ScatterChart
         height={300}
         width={300}
-        voronoiMaxRadius={30}
+        voronoiMaxRadius={10}
+        highlightedItem={highlightedItem}
+        onHighlightChange={onHighlightChange}
         series={[
           {
             data: boxscores.map((v) => ({
@@ -44,6 +51,7 @@ export const ScatterChartColoredWins: React.FC<BasicScatterProps> = ({
               z: v.win,
             })),
             markerSize: wholeLeague ? 2 : 3,
+            highlightScope: { highlight: "item", fade: "global" },
           },
         ]}
         zAxis={[
