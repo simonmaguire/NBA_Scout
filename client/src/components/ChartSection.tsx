@@ -5,6 +5,8 @@ import { ScatterChartColoredWins } from "./charts/BasicScatter";
 import { getSingleSeasonTeamBox } from "../data_access/GetDataFuncs";
 import { type TeamAbbr, type TeamBoxscore } from "../data_access/Teams";
 import CircleIcon from "@mui/icons-material/Circle";
+import { type HighlightItemData } from "@mui/x-charts/context";
+import { type ScatterItemIdentifier } from "@mui/x-charts";
 
 interface ChartSectionProps {
   team: TeamAbbr;
@@ -13,7 +15,18 @@ interface ChartSectionProps {
 
 export const ChartSection: React.FC<ChartSectionProps> = ({ team, season }) => {
   const [boxscores, setBoxscores] = useState<TeamBoxscore[]>([]);
+  const [gameIndex, setGameIndex] = useState<HighlightItemData | null>(null);
+  const [selectedGame, setSelectedGame] = useState<number | null>(null);
 
+  const onSelectGame = (
+    event: MouseEvent,
+    game: ScatterItemIdentifier | null
+  ) => {
+    console.log(event);
+    const gameID = game ? game.dataIndex : null;
+    setSelectedGame(gameID);
+  };
+  console.log(selectedGame);
   useEffect(() => {
     if (!team) return;
     if (team !== "ALL") {
@@ -53,6 +66,9 @@ export const ChartSection: React.FC<ChartSectionProps> = ({ team, season }) => {
             title={"Field Goals"}
             xAxis={{ label: "FG Attempts", stat: "fga" }}
             yAxis={{ label: "FG %", stat: "fg_percent" }}
+            highlightedItem={gameIndex}
+            onHighlightChange={setGameIndex}
+            onSelectGame={onSelectGame}
           />
         </Paper>
         <Paper>
@@ -62,6 +78,9 @@ export const ChartSection: React.FC<ChartSectionProps> = ({ team, season }) => {
             title={"Three Pointers"}
             xAxis={{ label: "3PT Attempts", stat: "three_a" }}
             yAxis={{ label: "3PT %", stat: "three_percent" }}
+            highlightedItem={gameIndex}
+            onHighlightChange={setGameIndex}
+            onSelectGame={onSelectGame}
           />
         </Paper>
         <Paper>
@@ -71,6 +90,9 @@ export const ChartSection: React.FC<ChartSectionProps> = ({ team, season }) => {
             title={"Assists to Turnovers"}
             xAxis={{ label: "Assists", stat: "ast" }}
             yAxis={{ label: "Turnovers", stat: "tov" }}
+            highlightedItem={gameIndex}
+            onHighlightChange={setGameIndex}
+            onSelectGame={onSelectGame}
           />
         </Paper>
         <Paper>
@@ -80,6 +102,9 @@ export const ChartSection: React.FC<ChartSectionProps> = ({ team, season }) => {
             title={"Rebounds"}
             xAxis={{ label: "DREB", stat: "dreb" }}
             yAxis={{ label: "OREB", stat: "oreb" }}
+            highlightedItem={gameIndex}
+            onHighlightChange={setGameIndex}
+            onSelectGame={onSelectGame}
           />
         </Paper>
       </Grid>
