@@ -22,6 +22,7 @@ export const ChartSection: React.FC<ChartSectionProps> = ({ team, season }) => {
     event: MouseEvent,
     game: ScatterItemIdentifier | null
   ) => {
+    console.log(event);
     const gameID = game ? game.dataIndex : null;
     setSelectedGame(gameID);
   };
