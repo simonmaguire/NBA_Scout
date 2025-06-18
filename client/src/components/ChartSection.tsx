@@ -25,7 +25,7 @@ export const ChartSection: React.FC<ChartSectionProps> = ({ team, season }) => {
     const gameID = game ? game.dataIndex : null;
     setSelectedGame(gameID);
   };
-
+  console.log(selectedGame);
   useEffect(() => {
     if (!team) return;
     if (team !== "ALL") {
