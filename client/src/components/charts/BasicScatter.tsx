@@ -3,6 +3,7 @@ import { ScatterChart } from "@mui/x-charts/ScatterChart";
 // import { getSingleSeasonTeamBox } from "../../data_access/GetDataFuncs";
 import { type TeamBoxscore } from "../../data_access/Teams";
 import { type HighlightItemData } from "@mui/x-charts/context";
+import { type ScatterItemIdentifier } from "@mui/x-charts";
 
 type BoxscoreKeys = keyof TeamBoxscore;
 
@@ -19,6 +20,7 @@ interface BasicScatterProps {
   yAxis: { label: string; stat: BoxscoreStats };
   onHighlightChange: (highlightedItem: HighlightItemData | null) => void;
   highlightedItem: HighlightItemData | null;
+  onSelectGame: (event: MouseEvent, game: ScatterItemIdentifier | null) => void;
 }
 
 export const ScatterChartColoredWins: React.FC<BasicScatterProps> = ({
@@ -29,20 +31,23 @@ export const ScatterChartColoredWins: React.FC<BasicScatterProps> = ({
   yAxis,
   onHighlightChange,
   highlightedItem,
+  onSelectGame,
 }) => {
   const otherSettings = {
-    yAxis: [{ label: yAxis.label }],
-    xAxis: [{ label: xAxis.label }],
+    yAxis: [{ label: yAxis.label, hideTooltip: true }],
+    xAxis: [{ label: xAxis.label, hideTooltip: true }],
   };
   return (
-    <Box height={320} width={300}>
+    <Box height={270} width={250}>
       <Typography>{title}</Typography>
       <ScatterChart
-        height={300}
-        width={300}
+        height={250}
+        width={250}
         voronoiMaxRadius={10}
         highlightedItem={highlightedItem}
         onHighlightChange={onHighlightChange}
+        slotProps={{ tooltip: { trigger: "none" } }}
+        onItemClick={onSelectGame}
         series={[
           {
             data: boxscores.map((v) => ({
@@ -69,44 +74,4 @@ export const ScatterChartColoredWins: React.FC<BasicScatterProps> = ({
   );
 };
 
-export const DREBScatter: React.FC<BasicScatterProps> = ({
-  boxscores,
-  wholeLeague,
-}) => {
-  return (
-    <Box height={300} width={300}>
-      <Typography>Defensive Rebounds</Typography>
-
-      <ScatterChart
-        height={300}
-        width={300}
-        voronoiMaxRadius={30}
-        series={[
-          {
-            data: boxscores.map((v) => ({
-              x: v.dreb,
-              y: v.plus_minus,
-            })),
-            markerSize: wholeLeague ? 2 : 3,
-          },
-        ]}
-        grid={{ horizontal: true }}
-        yAxis={[
-          {
-            colorMap: {
-              type: "piecewise",
-              thresholds: [0.5],
-              colors: ["#eb4034", "#0a8018"],
-            },
-            label: "+/-",
-          },
-        ]}
-        xAxis={[
-          {
-            label: "DREB",
-          },
-        ]}
-      />
-    </Box>
-  );
-};
+// export const SeasonsGames

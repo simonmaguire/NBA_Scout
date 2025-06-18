@@ -6,6 +6,7 @@ import { getSingleSeasonTeamBox } from "../data_access/GetDataFuncs";
 import { type TeamAbbr, type TeamBoxscore } from "../data_access/Teams";
 import CircleIcon from "@mui/icons-material/Circle";
 import { type HighlightItemData } from "@mui/x-charts/context";
+import { type ScatterItemIdentifier } from "@mui/x-charts";
 
 interface ChartSectionProps {
   team: TeamAbbr;
@@ -15,6 +16,15 @@ interface ChartSectionProps {
 export const ChartSection: React.FC<ChartSectionProps> = ({ team, season }) => {
   const [boxscores, setBoxscores] = useState<TeamBoxscore[]>([]);
   const [gameIndex, setGameIndex] = useState<HighlightItemData | null>(null);
+  const [selectedGame, setSelectedGame] = useState<number | null>(null);
+
+  const onSelectGame = (
+    event: MouseEvent,
+    game: ScatterItemIdentifier | null
+  ) => {
+    const gameID = game ? game.dataIndex : null;
+    setSelectedGame(gameID);
+  };
 
   useEffect(() => {
     if (!team) return;
@@ -57,6 +67,7 @@ export const ChartSection: React.FC<ChartSectionProps> = ({ team, season }) => {
             yAxis={{ label: "FG %", stat: "fg_percent" }}
             highlightedItem={gameIndex}
             onHighlightChange={setGameIndex}
+            onSelectGame={onSelectGame}
           />
         </Paper>
         <Paper>
@@ -68,6 +79,7 @@ export const ChartSection: React.FC<ChartSectionProps> = ({ team, season }) => {
             yAxis={{ label: "3PT %", stat: "three_percent" }}
             highlightedItem={gameIndex}
             onHighlightChange={setGameIndex}
+            onSelectGame={onSelectGame}
           />
         </Paper>
         <Paper>
@@ -79,6 +91,7 @@ export const ChartSection: React.FC<ChartSectionProps> = ({ team, season }) => {
             yAxis={{ label: "Turnovers", stat: "tov" }}
             highlightedItem={gameIndex}
             onHighlightChange={setGameIndex}
+            onSelectGame={onSelectGame}
           />
         </Paper>
         <Paper>
@@ -90,6 +103,7 @@ export const ChartSection: React.FC<ChartSectionProps> = ({ team, season }) => {
             yAxis={{ label: "OREB", stat: "oreb" }}
             highlightedItem={gameIndex}
             onHighlightChange={setGameIndex}
+            onSelectGame={onSelectGame}
           />
         </Paper>
       </Grid>
